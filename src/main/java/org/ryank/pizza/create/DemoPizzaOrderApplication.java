@@ -1,4 +1,4 @@
-package org.ryank.demopizzaorder;
+package org.ryank.pizza.create;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

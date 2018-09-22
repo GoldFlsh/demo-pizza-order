@@ -1,4 +1,4 @@
-package org.ryank.demopizzaorder.resources.pizza.repository.dataobject;
+package org.ryank.pizza.create.resources.config.ingredient.repository.dataobject;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Ingredient {
+public class IngredientDO {
 
   @Id
   private String name;
