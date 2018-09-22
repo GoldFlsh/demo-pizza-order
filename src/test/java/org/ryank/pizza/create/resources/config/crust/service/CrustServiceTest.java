@@ -3,7 +3,10 @@ package org.ryank.pizza.create.resources.config.crust.service;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +14,6 @@ import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.AdditionalAnswers;
-import org.mockito.Mockito;
 import org.ryank.pizza.create.common.exceptions.BadRequestException;
 import org.ryank.pizza.create.resources.config.crust.repository.CrustRepository;
 import org.ryank.pizza.create.resources.config.crust.repository.dataobject.CrustDO;
@@ -118,7 +120,7 @@ public class CrustServiceTest {
   }
   
   @Test
-  public void delete_should_returnDeletedObject_whenExists() {
+  public void delete_should_callDeleteMethod_whenCrustExists() {
     Crust expectedCrust = new Crust("CRUST", 1.0);
     when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new CrustDO(expectedCrust)));

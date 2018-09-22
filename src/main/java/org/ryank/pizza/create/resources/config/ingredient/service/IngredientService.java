@@ -7,39 +7,36 @@ import org.ryank.pizza.create.resources.config.ingredient.service.model.Ingredie
 public interface IngredientService {
 
   /**
-   * Return all supported Ingredients
-   * @return
+   * @return - all configured ingredients
    */
   List<Ingredient> get();
 
   /**
-   * Get a specific Ingredient by name
-   * @param name
-   * @return Ingredient model
+   * @param name of ingredient to query for
+   * @return found ingredient
    */
   Optional<Ingredient> get(String name);
 
   /**
-   * Create a new Ingredient given a new Ingredient model.
+   * Create a new ingredient given a new ingredient model.
    *
    * Note must be uniquely named
-   * @param Ingredient
-   * @return The newly created Ingredient
+   * @param ingredient - new ingredient
+   * @return The newly created ingredient
    */
-  Ingredient create(Ingredient Ingredient);
+  Ingredient create(Ingredient ingredient);
 
   /**
    * Updates the Ingredient given a model with
    * a matching Ingredient name
-   * @param Ingredient
-   * @return
+   * @param ingredient - updated ingredient
+   * @return - updated ingredient
    */
-  Ingredient update(Ingredient Ingredient);
+  Ingredient update(Ingredient ingredient);
 
   /**
    * Deletes a Ingredient given the Ingredient's name
-   * @param name
-   * @return the deleted Ingredient
+   * @param name - of ingredient to delete
    */
-  Ingredient delete(String name);
+  void delete(String name);
 }

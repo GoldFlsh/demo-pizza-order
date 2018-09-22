@@ -10,9 +10,11 @@ import org.ryank.pizza.create.resources.config.ingredient.repository.dataobject.
 import org.ryank.pizza.create.resources.config.ingredient.service.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class IngredientServiceImpl implements IngredientService {
 
   private final IngredientRepository repository;
@@ -26,34 +28,39 @@ public class IngredientServiceImpl implements IngredientService {
 
   @Override
   public Optional<Ingredient> get(String name) {
-    return repository.findById(name)
+    return repository.findByNameIgnoreCase(name)
         .map(IngredientDO::unpack);
   }
 
   @Override
   public Ingredient create(Ingredient ingredient) {
-    if (get(ingredient.getName()).isPresent()) {
-      throw new BadRequestException("Ingredient " + ingredient.getName() + " already exists");
-    }
+    assertNotExists(ingredient.getName());
     return persistModel(ingredient);
   }
 
   @Override
   public Ingredient update(Ingredient ingredient) {
-    if (!get(ingredient.getName()).isPresent()) {
-      throw new BadRequestException("Ingredient " + ingredient.getName() + " doesn't exist");
-    }
+    assertExists(ingredient.getName());
     return persistModel(ingredient);
   }
 
   @Override
-  public Ingredient delete(String name) {
-    return repository.deleteByName(name)
-        .map(IngredientDO::unpack)
-        .orElseThrow(() -> new BadRequestException("Ingredient " + name + " doesn't exist"));
+  public void delete(String name) {
+    assertExists(name);
+    repository.deleteByNameIgnoreCase(name);
   }
 
   private Ingredient persistModel(Ingredient Ingredient) {
     return repository.save(new IngredientDO(Ingredient)).unpack();
+  }
+
+  private void assertExists(String name) {
+    get(name).orElseThrow(() -> new BadRequestException("Ingredient " + name + " doesn't exist"));
+  }
+
+  private void assertNotExists(String name) {
+    if (get(name).isPresent()) {
+      throw new BadRequestException("Ingredient " + name + " already exists");
+    }
   }
 }

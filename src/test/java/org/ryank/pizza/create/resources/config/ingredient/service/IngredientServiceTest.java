@@ -3,13 +3,17 @@ package org.ryank.pizza.create.resources.config.ingredient.service;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.mockito.AdditionalAnswers;
 import org.ryank.pizza.create.common.exceptions.BadRequestException;
 import org.ryank.pizza.create.resources.config.ingredient.repository.IngredientRepository;
 import org.ryank.pizza.create.resources.config.ingredient.repository.dataobject.IngredientDO;
@@ -22,14 +26,14 @@ public class IngredientServiceTest {
 
   @Before
   public void setupMock() {
-    mock = Mockito.mock(IngredientRepository.class);
+    mock = mock(IngredientRepository.class);
     ingredientService = new IngredientServiceImpl(mock);
   }
 
   @Test
   public void getAll_should_returnAll_whenThereIsResultsFromRepository() {
     Ingredient expectedIngredient = new Ingredient("INGREDIENT", 1.0);
-    Mockito.when(mock.findAll())
+    when(mock.findAll())
         .thenReturn(Collections.singletonList(new IngredientDO(expectedIngredient)));
 
     List<Ingredient> resultIngredients = ingredientService.get();
@@ -39,7 +43,7 @@ public class IngredientServiceTest {
 
   @Test
   public void getAll_should_returnEmpty_whenThereIsNoResultsFromRepository() {
-    Mockito.when(mock.findAll()).thenReturn(Collections.emptyList());
+    when(mock.findAll()).thenReturn(Collections.emptyList());
 
     List<Ingredient> resultIngredients = ingredientService.get();
 
@@ -49,17 +53,17 @@ public class IngredientServiceTest {
   @Test
   public void get_should_returnIngredient_whenResultIsFound() {
     Ingredient expectedIngredient = new Ingredient("INGREDIENT", 1.0);
-    Mockito.when(mock.findById(any(String.class)))
+    when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new IngredientDO(expectedIngredient)));
 
     Optional<Ingredient> resultIngredient = ingredientService.get(expectedIngredient.getName());
 
-    assertThat(resultIngredient.get(), is(expectedIngredient));
+    assertThat(resultIngredient.orElseThrow(), is(expectedIngredient));
   }
 
   @Test
   public void get_should_returnEmptyOptional_whenThereIsNoResultsFromRepository() {
-    Mockito.when(mock.findById(any(String.class))).thenReturn(Optional.empty());
+    when(mock.findByNameIgnoreCase(any(String.class))).thenReturn(Optional.empty());
 
     Optional<Ingredient> resultIngredient = ingredientService.get("INGREDIENT");
 
@@ -69,8 +73,8 @@ public class IngredientServiceTest {
   @Test
   public void create_should_returnCreatedObject_whenValidInput() {
     Ingredient expectedIngredient = new Ingredient("INGREDIENT", 1.0);
-    Mockito.when(mock.save(any(IngredientDO.class)))
-        .thenReturn(new IngredientDO(expectedIngredient));
+    when(mock.save(any(IngredientDO.class)))
+        .thenAnswer(AdditionalAnswers.returnsFirstArg());
 
     Ingredient resultIngredient = ingredientService.create(expectedIngredient);
 
@@ -80,7 +84,7 @@ public class IngredientServiceTest {
   @Test(expected = BadRequestException.class)
   public void create_should_throwBadRequest_whenIngredientAlreadyExists() {
     Ingredient existingIngredient = new Ingredient("INGREDIENT", 1.0);
-    Mockito.when(mock.findById(any(String.class)))
+    when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new IngredientDO(existingIngredient)));
 
     try {
@@ -94,9 +98,9 @@ public class IngredientServiceTest {
   @Test
   public void update_should_returnUpdatedObject_whenValidInput() {
     Ingredient expectedIngredient = new Ingredient("INGREDIENT", 1.0);
-    Mockito.when(mock.save(any(IngredientDO.class)))
-        .thenReturn(new IngredientDO(expectedIngredient));
-    Mockito.when(mock.findById(expectedIngredient.getName()))
+    when(mock.save(any(IngredientDO.class)))
+        .thenAnswer(AdditionalAnswers.returnsFirstArg());
+    when(mock.findByNameIgnoreCase(expectedIngredient.getName()))
         .thenReturn(Optional.of(new IngredientDO(expectedIngredient)));
 
     Ingredient resultIngredient = ingredientService.update(expectedIngredient);
@@ -116,14 +120,14 @@ public class IngredientServiceTest {
   }
   
   @Test
-  public void delete_should_returnDeletedObject_whenExists() {
+  public void delete_should_callDeleteMethod_whenExists() {
     Ingredient expectedIngredient = new Ingredient("INGREDIENT", 1.0);
-    Mockito.when(mock.deleteByName(any(String.class)))
+    when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new IngredientDO(expectedIngredient)));
 
-    Ingredient resultIngredient = ingredientService.delete(expectedIngredient.getName());
+    ingredientService.delete(expectedIngredient.getName());
 
-    assertThat(resultIngredient, is(expectedIngredient));
+    verify(mock, times(1)).deleteByNameIgnoreCase("INGREDIENT");
   }
 
 

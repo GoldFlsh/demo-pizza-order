@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IngredientRepository extends JpaRepository<IngredientDO, String> {
 
-  Optional<IngredientDO> deleteByName(String name);
+  Optional<IngredientDO> findByNameIgnoreCase(String name);
+
+  void deleteByNameIgnoreCase(String name);
 }
