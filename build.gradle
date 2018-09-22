@@ -31,6 +31,6 @@ dependencies {
     compile 'javax.xml.bind:jaxb-api:2.3.0'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.0.5.RELEASE'
 
-    runtime 'com.h2database:h2'
+    compile 'com.h2database:h2'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

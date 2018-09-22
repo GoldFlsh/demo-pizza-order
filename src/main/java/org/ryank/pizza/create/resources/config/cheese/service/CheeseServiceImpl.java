@@ -10,9 +10,11 @@ import org.ryank.pizza.create.resources.config.cheese.repository.dataobject.Chee
 import org.ryank.pizza.create.resources.config.cheese.service.model.Cheese;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
+@Transactional
 public class CheeseServiceImpl implements CheeseService {
 
   private final CheeseRepository repository;
@@ -26,34 +28,39 @@ public class CheeseServiceImpl implements CheeseService {
 
   @Override
   public Optional<Cheese> get(String name) {
-    return repository.findById(name)
+    return repository.findByNameIgnoreCase(name)
         .map(CheeseDO::unpack);
   }
 
   @Override
   public Cheese create(Cheese cheese) {
-    if (get(cheese.getName()).isPresent()) {
-      throw new BadRequestException("Cheese " + cheese.getName() + " already exists");
-    }
+    assertNotExists(cheese.getName());
     return persistModel(cheese);
   }
 
   @Override
   public Cheese update(Cheese cheese) {
-    if (!get(cheese.getName()).isPresent()) {
-        throw new BadRequestException("Cheese " + cheese.getName() + " doesn't exist");
-    }
+    assertExists(cheese.getName());
     return persistModel(cheese);
   }
 
   @Override
-  public Cheese delete(String name) {
-    return repository.deleteByName(name)
-        .map(CheeseDO::unpack)
-        .orElseThrow(() -> new BadRequestException("Cheese " + name + " doesn't exist"));
+  public void delete(String name) {
+    assertExists(name);
+    repository.deleteByNameIgnoreCase(name);
   }
 
   private Cheese persistModel(Cheese cheese) {
     return repository.save(new CheeseDO(cheese)).unpack();
+  }
+
+  private void assertExists(String name) {
+    get(name).orElseThrow(() -> new BadRequestException("Cheese " + name + " doesn't exist"));
+  }
+
+  private void assertNotExists(String name) {
+    if (get(name).isPresent()) {
+      throw new BadRequestException("Cheese " + name + " already exists");
+    }
   }
 }

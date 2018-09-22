@@ -12,4 +12,7 @@ public class Crust {
   private final String name;
   private final double cost;
 
+  public String getName() {
+    return name.toUpperCase();
+  }
 }

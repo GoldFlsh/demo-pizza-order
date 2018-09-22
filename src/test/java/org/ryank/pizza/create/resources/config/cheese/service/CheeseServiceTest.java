@@ -49,17 +49,17 @@ public class CheeseServiceTest {
   @Test
   public void get_should_returnCheese_whenResultIsFound() {
     Cheese expectedCheese = new Cheese("CHEESE", 1.0);
-    Mockito.when(mock.findById(any(String.class)))
+    Mockito.when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new CheeseDO(expectedCheese)));
 
     Optional<Cheese> resultCheese = cheeseService.get(expectedCheese.getName());
 
-    assertThat(resultCheese.get(), is(expectedCheese));
+    assertThat(resultCheese.orElseThrow(), is(expectedCheese));
   }
 
   @Test
   public void get_should_returnEmptyOptional_whenThereIsNoResultsFromRepository() {
-    Mockito.when(mock.findById(any(String.class))).thenReturn(Optional.empty());
+    Mockito.when(mock.findByNameIgnoreCase(any(String.class))).thenReturn(Optional.empty());
 
     Optional<Cheese> resultCheese = cheeseService.get("CHEESE");
 
@@ -80,7 +80,7 @@ public class CheeseServiceTest {
   @Test(expected = BadRequestException.class)
   public void create_should_throwBadRequest_whenCheeseAlreadyExists() {
     Cheese existingCheese = new Cheese("CHEESE", 1.0);
-    Mockito.when(mock.findById(any(String.class)))
+    Mockito.when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new CheeseDO(existingCheese)));
 
     try {
@@ -98,7 +98,7 @@ public class CheeseServiceTest {
     Mockito.when(mock.save(any(CheeseDO.class)))
         .thenReturn(new CheeseDO(expectedCheese));
 
-    Mockito.when(mock.findById(expectedCheese.getName()))
+    Mockito.when(mock.findByNameIgnoreCase(expectedCheese.getName()))
         .thenReturn(Optional.of(new CheeseDO(expectedCheese)));
 
     Cheese resultCheese = cheeseService.update(expectedCheese);
@@ -118,14 +118,14 @@ public class CheeseServiceTest {
   }
 
   @Test
-  public void delete_should_returnDeletedObject_whenExists() {
+  public void delete_should_callDeleteMethod_whenCheeseExists() {
     Cheese expectedCheese = new Cheese("CHEESE", 1.0);
-    Mockito.when(mock.deleteByName(any(String.class)))
+    Mockito.when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new CheeseDO(expectedCheese)));
 
-    Cheese resultCheese = cheeseService.delete(expectedCheese.getName());
+    cheeseService.delete(expectedCheese.getName());
 
-    assertThat(resultCheese, is(expectedCheese));
+    Mockito.verify(mock, Mockito.times(1)).deleteByNameIgnoreCase("CHEESE");
   }
 
 

@@ -7,15 +7,15 @@ import org.ryank.pizza.create.resources.config.cheese.service.model.Cheese;
 public interface CheeseService {
 
   /**
-   * Return all supported cheeses
-   * @return
+   * Return all configured cheeses
+   * @return list of all configured cheeses
    */
   List<Cheese> get();
 
   /**
    * Get a specific cheese by name
-   * @param name
-   * @return cheese model
+   * @param name - name of the cheese to query for
+   * @return model of the cheese found
    */
   Optional<Cheese> get(String name);
 
@@ -23,7 +23,7 @@ public interface CheeseService {
    * Create a new cheese given a new cheese model.
    *
    * Note must be uniquely named
-   * @param cheese
+   * @param cheese - the model of the cheese to add
    * @return The newly created cheese
    */
   Cheese create(Cheese cheese);
@@ -31,15 +31,14 @@ public interface CheeseService {
   /**
    * Updates the cheese given a model with
    * a matching cheese name
-   * @param cheese
-   * @return
+   * @param cheese - the model of the cheese to update with associated changes
+   * @return - the cheese after updates
    */
   Cheese update(Cheese cheese);
 
   /**
    * Deletes a cheese given the cheese's name
-   * @param name
-   * @return the deleted cheese
+   * @param name - name of the cheese to delete
    */
-  Cheese delete(String name);
+  void delete(String name);
 }

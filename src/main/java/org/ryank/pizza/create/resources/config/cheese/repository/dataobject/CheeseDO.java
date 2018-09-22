@@ -2,8 +2,12 @@ package org.ryank.pizza.create.resources.config.cheese.repository.dataobject;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.ryank.pizza.create.resources.config.cheese.service.model.Cheese;
 
+@Setter
+@NoArgsConstructor //for spring
 @Entity
 public class CheeseDO {
 

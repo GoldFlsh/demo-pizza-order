@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CheeseRepository extends JpaRepository<CheeseDO, String> {
+  Optional<CheeseDO> findByNameIgnoreCase(String name);
 
-  Optional<CheeseDO> deleteByName(String name);
-
+  void deleteByNameIgnoreCase(String name);
 }
