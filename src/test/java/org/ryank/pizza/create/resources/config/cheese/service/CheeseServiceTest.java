@@ -102,6 +102,17 @@ public class CheeseServiceTest {
     assertThat(resultCheese, is(expectedCheese));
   }
 
+  @Test(expected = BadRequestException.class)
+  public void update_should_throwBadRequest_whenDoesntExist() {
+    Cheese expectedCheese = new Cheese("CHEESE", 1.0);
+    try {
+      cheeseService.update(expectedCheese);
+    } catch (BadRequestException e) {
+      assertThat(e.getMessage(), is("Cheese " + "CHEESE" + " doesn't exist"));
+      throw e;
+    }
+  }
+
   @Test
   public void delete_should_returnDeletedObject_whenExists() {
     Cheese expectedCheese = new Cheese("CHEESE", 1.0);

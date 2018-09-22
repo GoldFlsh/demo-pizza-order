@@ -102,6 +102,17 @@ public class CrustServiceTest {
     assertThat(resultCrust, is(expectedCrust));
   }
 
+  @Test(expected = BadRequestException.class)
+  public void update_should_throwBadRequest_whenDoesntExist() {
+    Crust expectedCrust = new Crust("CRUST", 1.0);
+    try {
+      crustService.update(expectedCrust);
+    } catch (BadRequestException e) {
+      assertThat(e.getMessage(), is("Crust " + "CRUST" + " doesn't exist"));
+      throw e;
+    }
+  }
+  
   @Test
   public void delete_should_returnDeletedObject_whenExists() {
     Crust expectedCrust = new Crust("CRUST", 1.0);

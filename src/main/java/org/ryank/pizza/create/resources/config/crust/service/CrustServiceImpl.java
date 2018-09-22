@@ -37,8 +37,11 @@ public class CrustServiceImpl implements CrustService {
   }
 
   @Override
-  public Crust update(Crust Crust) {
-    return persistModel(Crust);
+  public Crust update(Crust crust) {
+    if (!get(crust.getName()).isPresent()) {
+      throw new BadRequestException("Crust " + crust.getName() + " doesn't exist");
+    }
+    return persistModel(crust);
   }
 
   @Override

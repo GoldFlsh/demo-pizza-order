@@ -102,6 +102,17 @@ public class IngredientServiceTest {
     assertThat(resultIngredient, is(expectedIngredient));
   }
 
+  @Test(expected = BadRequestException.class)
+  public void update_should_throwBadRequest_whenDoesntExist() {
+    Ingredient expectedIngredient = new Ingredient("INGREDIENT", 1.0);
+    try {
+      ingredientService.update(expectedIngredient);
+    } catch (BadRequestException e) {
+      assertThat(e.getMessage(), is("Ingredient " + "INGREDIENT" + " doesn't exist"));
+      throw e;
+    }
+  }
+  
   @Test
   public void delete_should_returnDeletedObject_whenExists() {
     Ingredient expectedIngredient = new Ingredient("INGREDIENT", 1.0);

@@ -38,6 +38,9 @@ public class CheeseServiceImpl implements CheeseService {
 
   @Override
   public Cheese update(Cheese cheese) {
+    if (!get(cheese.getName()).isPresent()) {
+        throw new BadRequestException("Cheese " + cheese.getName() + " doesn't exist");
+    }
     return persistModel(cheese);
   }
 
