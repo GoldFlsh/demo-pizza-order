@@ -8,38 +8,37 @@ public interface CrustService {
 
   /**
    * Return all supported Crusts
-   * @return
+   * @return list of all configured crusts
    */
   List<Crust> get();
 
   /**
    * Get a specific Crust by name
-   * @param name
-   * @return Crust model
+   * @param name - name of crust to find
+   * @return crust model found
    */
   Optional<Crust> get(String name);
 
   /**
    * Create a new Crust given a new Crust model.
    *
-   * Note must be uniquely named
-   * @param Crust
+   * name must be unique
+   * @param crust - the crust to create
    * @return The newly created Crust
    */
-  Crust create(Crust Crust);
+  Crust create(Crust crust);
 
   /**
    * Updates the Crust given a model with
    * a matching Crust name
-   * @param Crust
-   * @return
+   * @param crust - the crust to update
+   * @return - the updated crust
    */
-  Crust update(Crust Crust);
+  Crust update(Crust crust);
 
   /**
    * Deletes a Crust given the Crust's name
-   * @param name
-   * @return the deleted Crust
+   * @param name - name of the crust to delete
    */
-  Crust delete(String name);
+  void delete(String name);
 }

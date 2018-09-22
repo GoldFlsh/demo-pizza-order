@@ -10,9 +10,11 @@ import org.ryank.pizza.create.resources.config.crust.repository.dataobject.Crust
 import org.ryank.pizza.create.resources.config.crust.service.model.Crust;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CrustServiceImpl implements CrustService {
 
   private final CrustRepository repository;
@@ -26,34 +28,39 @@ public class CrustServiceImpl implements CrustService {
 
   @Override
   public Optional<Crust> get(String name) {
-    return repository.findById(name)
+    return repository.findByNameIgnoreCase(name)
         .map(CrustDO::unpack);
   }
 
   @Override
-  public Crust create(Crust Crust) {
-    if (get(Crust.getName()).isPresent()) {
-      throw new BadRequestException("Crust " + Crust.getName() + " already exists");
-    }
-    return persistModel(Crust);
-  }
-
-  @Override
-  public Crust update(Crust crust) {
-    if (!get(crust.getName()).isPresent()) {
-      throw new BadRequestException("Crust " + crust.getName() + " doesn't exist");
-    }
+  public Crust create(Crust crust) {
+    assertNotExists(crust.getName());
     return persistModel(crust);
   }
 
   @Override
-  public Crust delete(String name) {
-    return repository.deleteByName(name)
-        .map(CrustDO::unpack)
-        .orElseThrow(() -> new BadRequestException("Crust " + name + " doesn't exist"));
+  public Crust update(Crust crust) {
+    assertExists(crust.getName());
+    return persistModel(crust);
   }
 
-  private Crust persistModel(Crust Crust) {
-    return repository.save(new CrustDO(Crust)).unpack();
+  @Override
+  public void delete(String name) {
+    assertExists(name);
+    repository.deleteByNameIgnoreCase(name);
+  }
+
+  private Crust persistModel(Crust crust) {
+    return repository.save(new CrustDO(crust)).unpack();
+  }
+
+  private void assertExists(String name) {
+    get(name).orElseThrow(() -> new BadRequestException("Crust " + name + " doesn't exist"));
+  }
+
+  private void assertNotExists(String name) {
+    if (get(name).isPresent()) {
+      throw new BadRequestException("Crust " + name + " already exists");
+    }
   }
 }

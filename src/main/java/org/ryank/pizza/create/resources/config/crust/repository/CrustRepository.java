@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CrustRepository extends JpaRepository<CrustDO, String> {
-  Optional<CrustDO> deleteByName(String name);
+  Optional<CrustDO> findByNameIgnoreCase(String name);
+  void deleteByNameIgnoreCase(String name);
 
 }
