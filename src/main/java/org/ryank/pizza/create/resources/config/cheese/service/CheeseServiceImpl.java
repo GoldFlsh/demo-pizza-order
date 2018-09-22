@@ -9,8 +9,10 @@ import org.ryank.pizza.create.resources.config.cheese.repository.CheeseRepositor
 import org.ryank.pizza.create.resources.config.cheese.repository.dataobject.CheeseDO;
 import org.ryank.pizza.create.resources.config.cheese.service.model.Cheese;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Service
 public class CheeseServiceImpl implements CheeseService {
 
   private final CheeseRepository repository;

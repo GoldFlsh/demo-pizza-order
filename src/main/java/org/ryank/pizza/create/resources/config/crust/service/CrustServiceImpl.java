@@ -9,8 +9,10 @@ import org.ryank.pizza.create.resources.config.crust.repository.CrustRepository;
 import org.ryank.pizza.create.resources.config.crust.repository.dataobject.CrustDO;
 import org.ryank.pizza.create.resources.config.crust.service.model.Crust;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Service
 public class CrustServiceImpl implements CrustService {
 
   private final CrustRepository repository;

@@ -9,8 +9,10 @@ import org.ryank.pizza.create.resources.config.ingredient.repository.IngredientR
 import org.ryank.pizza.create.resources.config.ingredient.repository.dataobject.IngredientDO;
 import org.ryank.pizza.create.resources.config.ingredient.service.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Service
 public class IngredientServiceImpl implements IngredientService {
 
   private final IngredientRepository repository;

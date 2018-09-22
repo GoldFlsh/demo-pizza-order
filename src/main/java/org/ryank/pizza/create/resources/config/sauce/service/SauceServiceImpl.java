@@ -9,8 +9,10 @@ import org.ryank.pizza.create.resources.config.sauce.repository.SauceRepository;
 import org.ryank.pizza.create.resources.config.sauce.repository.dataobject.SauceDO;
 import org.ryank.pizza.create.resources.config.sauce.service.model.Sauce;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Service
 public class SauceServiceImpl implements SauceService {
 
   private final SauceRepository repository;
