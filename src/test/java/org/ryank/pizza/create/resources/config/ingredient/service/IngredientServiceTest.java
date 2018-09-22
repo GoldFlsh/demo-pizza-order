@@ -96,6 +96,8 @@ public class IngredientServiceTest {
     Ingredient expectedIngredient = new Ingredient("INGREDIENT", 1.0);
     Mockito.when(mock.save(any(IngredientDO.class)))
         .thenReturn(new IngredientDO(expectedIngredient));
+    Mockito.when(mock.findById(expectedIngredient.getName()))
+        .thenReturn(Optional.of(new IngredientDO(expectedIngredient)));
 
     Ingredient resultIngredient = ingredientService.update(expectedIngredient);
 

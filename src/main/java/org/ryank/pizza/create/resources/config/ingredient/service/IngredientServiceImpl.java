@@ -29,16 +29,19 @@ public class IngredientServiceImpl implements IngredientService {
   }
 
   @Override
-  public Ingredient create(Ingredient Ingredient) {
-    if (get(Ingredient.getName()).isPresent()) {
-      throw new BadRequestException("Ingredient " + Ingredient.getName() + " already exists");
+  public Ingredient create(Ingredient ingredient) {
+    if (get(ingredient.getName()).isPresent()) {
+      throw new BadRequestException("Ingredient " + ingredient.getName() + " already exists");
     }
-    return persistModel(Ingredient);
+    return persistModel(ingredient);
   }
 
   @Override
-  public Ingredient update(Ingredient Ingredient) {
-    return persistModel(Ingredient);
+  public Ingredient update(Ingredient ingredient) {
+    if (!get(ingredient.getName()).isPresent()) {
+      throw new BadRequestException("Ingredient " + ingredient.getName() + " doesn't exist");
+    }
+    return persistModel(ingredient);
   }
 
   @Override

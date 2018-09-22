@@ -94,8 +94,12 @@ public class CheeseServiceTest {
   @Test
   public void update_should_returnUpdatedObject_whenValidInput() {
     Cheese expectedCheese = new Cheese("CHEESE", 1.0);
+
     Mockito.when(mock.save(any(CheeseDO.class)))
         .thenReturn(new CheeseDO(expectedCheese));
+
+    Mockito.when(mock.findById(expectedCheese.getName()))
+        .thenReturn(Optional.of(new CheeseDO(expectedCheese)));
 
     Cheese resultCheese = cheeseService.update(expectedCheese);
 

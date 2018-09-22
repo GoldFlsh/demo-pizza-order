@@ -96,6 +96,8 @@ public class CrustServiceTest {
     Crust expectedCrust = new Crust("CRUST", 1.0);
     Mockito.when(mock.save(any(CrustDO.class)))
         .thenReturn(new CrustDO(expectedCrust));
+    Mockito.when(mock.findById(expectedCrust.getName()))
+        .thenReturn(Optional.of(new CrustDO(expectedCrust)));
 
     Crust resultCrust = crustService.update(expectedCrust);
 
