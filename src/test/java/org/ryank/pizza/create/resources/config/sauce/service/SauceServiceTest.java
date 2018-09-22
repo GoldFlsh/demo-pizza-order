@@ -3,12 +3,15 @@ package org.ryank.pizza.create.resources.config.sauce.service;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.AdditionalAnswers;
 import org.mockito.Mockito;
 import org.ryank.pizza.create.common.exceptions.BadRequestException;
 import org.ryank.pizza.create.resources.config.sauce.repository.SauceRepository;
@@ -49,17 +52,17 @@ public class SauceServiceTest {
   @Test
   public void get_should_returnSauce_whenResultIsFound() {
     Sauce expectedSauce = new Sauce("SAUCE", 1.0);
-    Mockito.when(mock.findById(any(String.class)))
+    Mockito.when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new SauceDO(expectedSauce)));
 
     Optional<Sauce> resultSauce = sauceService.get(expectedSauce.getName());
 
-    assertThat(resultSauce.get(), is(expectedSauce));
+    assertThat(resultSauce.orElseThrow(), is(expectedSauce));
   }
 
   @Test
   public void get_should_returnEmptyOptional_whenThereIsNoResultsFromRepository() {
-    Mockito.when(mock.findById(any(String.class))).thenReturn(Optional.empty());
+    Mockito.when(mock.findByNameIgnoreCase(any(String.class))).thenReturn(Optional.empty());
 
     Optional<Sauce> resultSauce = sauceService.get("SAUCE");
 
@@ -70,7 +73,7 @@ public class SauceServiceTest {
   public void create_should_returnCreatedObject_whenValidInput() {
     Sauce expectedSauce = new Sauce("SAUCE", 1.0);
     Mockito.when(mock.save(any(SauceDO.class)))
-        .thenReturn(new SauceDO(expectedSauce));
+        .thenAnswer(AdditionalAnswers.returnsFirstArg());
 
     Sauce resultSauce = sauceService.create(expectedSauce);
 
@@ -80,7 +83,7 @@ public class SauceServiceTest {
   @Test(expected = BadRequestException.class)
   public void create_should_throwBadRequest_whenSauceAlreadyExists() {
     Sauce existingSauce = new Sauce("SAUCE", 1.0);
-    Mockito.when(mock.findById(any(String.class)))
+    Mockito.when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new SauceDO(existingSauce)));
 
     try {
@@ -95,8 +98,8 @@ public class SauceServiceTest {
   public void update_should_returnUpdatedObject_whenValidInput() {
     Sauce expectedSauce = new Sauce("SAUCE", 1.0);
     Mockito.when(mock.save(any(SauceDO.class)))
-        .thenReturn(new SauceDO(expectedSauce));
-    Mockito.when(mock.findById(expectedSauce.getName()))
+        .thenAnswer(AdditionalAnswers.returnsFirstArg());
+    Mockito.when(mock.findByNameIgnoreCase(expectedSauce.getName()))
         .thenReturn(Optional.of(new SauceDO(expectedSauce)));
 
     Sauce resultSauce = sauceService.update(expectedSauce);
@@ -116,16 +119,15 @@ public class SauceServiceTest {
   }
   
   @Test
-  public void delete_should_returnDeletedObject_whenExists() {
+  public void delete_should_callDeleteMethod_whenExists() {
     Sauce expectedSauce = new Sauce("SAUCE", 1.0);
-    Mockito.when(mock.deleteByName(any(String.class)))
+    Mockito.when(mock.findByNameIgnoreCase(any(String.class)))
         .thenReturn(Optional.of(new SauceDO(expectedSauce)));
 
-    Sauce resultSauce = sauceService.delete(expectedSauce.getName());
+    sauceService.delete(expectedSauce.getName());
 
-    assertThat(resultSauce, is(expectedSauce));
+    verify(mock, times(1)).deleteByNameIgnoreCase("SAUCE");
   }
-
 
   @Test(expected = BadRequestException.class)
   public void delete_should_throwBadRequest_whenSauceDoesntExists() {

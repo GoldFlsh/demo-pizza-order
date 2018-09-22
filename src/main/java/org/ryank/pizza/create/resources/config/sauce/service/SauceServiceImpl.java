@@ -10,9 +10,11 @@ import org.ryank.pizza.create.resources.config.sauce.repository.dataobject.Sauce
 import org.ryank.pizza.create.resources.config.sauce.service.model.Sauce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SauceServiceImpl implements SauceService {
 
   private final SauceRepository repository;
@@ -26,34 +28,39 @@ public class SauceServiceImpl implements SauceService {
 
   @Override
   public Optional<Sauce> get(String name) {
-    return repository.findById(name)
+    return repository.findByNameIgnoreCase(name)
         .map(SauceDO::unpack);
   }
 
   @Override
   public Sauce create(Sauce sauce) {
-    if (get(sauce.getName()).isPresent()) {
-      throw new BadRequestException("Sauce " + sauce.getName() + " already exists");
-    }
+    assertNotExists(sauce.getName());
     return persistModel(sauce);
   }
 
   @Override
   public Sauce update(Sauce sauce) {
-    if (!get(sauce.getName()).isPresent()) {
-      throw new BadRequestException("Sauce " + sauce.getName() + " doesn't exist");
-    }
+    assertExists(sauce.getName());
     return persistModel(sauce);
   }
 
   @Override
-  public Sauce delete(String name) {
-    return repository.deleteByName(name)
-        .map(SauceDO::unpack)
-        .orElseThrow(() -> new BadRequestException("Sauce " + name + " doesn't exist"));
+  public void delete(String name) {
+    assertExists(name);
+    repository.deleteByNameIgnoreCase(name);
   }
 
   private Sauce persistModel(Sauce Sauce) {
     return repository.save(new SauceDO(Sauce)).unpack();
+  }
+
+  private void assertExists(String name) {
+    get(name).orElseThrow(() -> new BadRequestException("Sauce " + name + " doesn't exist"));
+  }
+
+  private void assertNotExists(String name) {
+    if (get(name).isPresent()) {
+      throw new BadRequestException("Sauce " + name + " already exists");
+    }
   }
 }
