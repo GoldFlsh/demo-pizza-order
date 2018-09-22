@@ -7,8 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.Data;
-import org.ryank.pizza.create.resources.config.cheese.repository.dataobject.Cheese;
-import org.ryank.pizza.create.resources.config.crust.repository.dataobject.Crust;
+import org.ryank.pizza.create.resources.config.cheese.repository.dataobject.CheeseDO;
+import org.ryank.pizza.create.resources.config.crust.repository.dataobject.CrustDO;
 import org.ryank.pizza.create.resources.config.ingredient.repository.dataobject.IngredientDO;
 import org.ryank.pizza.create.resources.config.sauce.repository.dataobject.SauceDO;
 
@@ -21,10 +21,10 @@ public class PizzaDO {
   private Integer id;
 
   @OneToOne
-  private Cheese cheese;
+  private CheeseDO cheese;
 
   @OneToOne
-  private Crust crust;
+  private CrustDO crust;
 
   @OneToOne
   private SauceDO sauce;
