@@ -6,7 +6,7 @@ import lombok.Data;
 import org.ryank.pizza.create.resources.config.crust.service.model.Crust;
 
 @Data //for spring
-@Entity
+@Entity(name = "CRUST")
 public class CrustDO {
 
   @Id

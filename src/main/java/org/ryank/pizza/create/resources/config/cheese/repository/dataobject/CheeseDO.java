@@ -8,7 +8,7 @@ import org.ryank.pizza.create.resources.config.cheese.service.model.Cheese;
 
 @Setter
 @NoArgsConstructor //for spring
-@Entity
+@Entity(name = "CHEESE")
 public class CheeseDO {
 
   @Id

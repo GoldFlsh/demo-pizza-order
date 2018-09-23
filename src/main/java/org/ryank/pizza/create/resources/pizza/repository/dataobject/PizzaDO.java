@@ -3,9 +3,10 @@ package org.ryank.pizza.create.resources.pizza.repository.dataobject;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import lombok.Data;
 import org.ryank.pizza.create.resources.config.cheese.repository.dataobject.CheeseDO;
@@ -16,7 +17,7 @@ import org.ryank.pizza.create.resources.config.sauce.repository.dataobject.Sauce
 import org.ryank.pizza.create.resources.pizza.service.model.Pizza;
 
 @Data
-@Entity
+@Entity(name = "PIZZA")
 public class PizzaDO {
 
   @Id
@@ -32,7 +33,7 @@ public class PizzaDO {
   @OneToOne
   private SauceDO sauce;
 
-  @OneToMany
+  @ManyToMany(targetEntity = IngredientDO.class, fetch = FetchType.LAZY)
   private List<IngredientDO> ingredients;
 
   public PizzaDO(Pizza model) {

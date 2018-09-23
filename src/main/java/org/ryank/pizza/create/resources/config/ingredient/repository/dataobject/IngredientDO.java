@@ -6,7 +6,7 @@ import lombok.Data;
 import org.ryank.pizza.create.resources.config.ingredient.service.model.Ingredient;
 
 @Data //for spring
-@Entity
+@Entity(name = "INGREDIENT")
 public class IngredientDO {
 
   @Id
