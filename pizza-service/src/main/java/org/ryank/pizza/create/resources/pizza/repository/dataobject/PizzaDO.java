@@ -7,7 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import lombok.Data;
 import org.ryank.pizza.create.resources.config.cheese.repository.dataobject.CheeseDO;
 import org.ryank.pizza.create.resources.config.crust.repository.dataobject.CrustDO;
@@ -24,13 +24,13 @@ public class PizzaDO {
   @GeneratedValue
   private Integer id;
 
-  @OneToOne
+  @ManyToOne
   private CheeseDO cheese;
 
-  @OneToOne
+  @ManyToOne
   private CrustDO crust;
 
-  @OneToOne
+  @ManyToOne
   private SauceDO sauce;
 
   @ManyToMany(targetEntity = IngredientDO.class, fetch = FetchType.LAZY)
