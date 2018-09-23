@@ -15,13 +15,6 @@ you can read more about them in their individual folders' readme.md file.
 
 Java JDK/JRE 10
 
-## Running the tests
-
-At the project root run 
-```
-./gradlew test 
-```
-
 ## Built With
 
 * [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) - Dependency Management
