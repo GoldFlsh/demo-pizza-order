@@ -18,4 +18,5 @@ public class BadRequestException extends RuntimeException {
     super(cause);
   }
 
+  //TODO Global Exception Handler to catch and handle elegant error responses to client(s)
 }

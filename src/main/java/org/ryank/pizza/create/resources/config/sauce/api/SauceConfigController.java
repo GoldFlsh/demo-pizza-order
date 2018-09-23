@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SauceConfigController {
   private final SauceService sauceService;
 
+  //TODO Secure such that only administrators can access
+
   @GetMapping
   public ResponseEntity<List<SauceDto>> get() {
     List<SauceDto> dtos = sauceService.get().stream()

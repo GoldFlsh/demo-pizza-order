@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CrustConfigController {
   private final CrustService crustService;
 
+  //TODO Secure such that only administrators can access
+
   @GetMapping
   public ResponseEntity<List<CrustDto>> get() {
     List<CrustDto> dtos = crustService.get().stream()
