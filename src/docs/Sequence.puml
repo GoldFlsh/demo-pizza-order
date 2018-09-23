@@ -1,3 +1,72 @@
 @startuml
 
+participant OrderClient
+participant OrdersService
+participant PizzaService
+participant PricingService
+note right of PricingService
+  should pricing service exist?
+  or just let orders service handle it
+  I'm leaning yes.
+end note
+loop as many pizzas\nas user wants
+OrderClient -> PizzaService : create Pizza
+OrderClient <-- PizzaService : pizza id
+end loop
+
+OrderClient -> OrdersService : order : List Pizza Ids
+
+OrdersService -> PricingService : getTotalCost(pizzaIdList)
+loop foreach pizza id
+  PizzaService <- PricingService : get pizza
+  note right #aqua
+    could also allow
+    for list input
+    instead of loop
+  end note
+  PizzaService --> PricingService : pizza
+end loop
+PricingService -> PricingService : calculate total
+note right
+  consider discounts? tax?
+  sales? and upcharge ingredients
+end note
+OrdersService <-- PricingService : total
+
+OrderClient <-- OrdersService : request payment
+note left: handwaving\nthis right now\nclients' problem?
+OrderClient --> OrdersService : payment received
+
+OrdersService -> StoreClient : send order (pizza ids, userInfo)
+loop foreach pizza id
+  PizzaService <- StoreClient : get pizza
+  PizzaService --> StoreClient : pizza
+end loop
+loop until DELIVERED state returned
+  OrderClient -> OrdersService : requestState
+  OrderClient <-- OrdersService : state
+  loop ORDERED, PREP, OVEN, DELIVERING, DELIVERED
+    OrdersService <- StoreClient : updateState
+    OrdersService -> StoreClient : ack
+  end loop
+  OrderClient -> OrdersService : requestState
+  OrderClient <-- OrdersService : state
+end loop
+
+OrdersService -> PizzaService : delete pizzas
+note right
+  eventually allow users
+  to save favorites
+  save order or pizza
+end note
+OrdersService <-- PizzaService : ack
+
 @enduml
+
+The biggest glaring issue with this design is there will
+absolutely be a lot of duplicate pizzas in the Pizza DB.
+If users start persisting favorite orders, then pizza DB needs
+to be able to 'reuse' pizzas that are the same across multiple
+users/orders.
+
+TODO Only supports ordering pizzas, doesn't support drinks
