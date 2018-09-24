@@ -23,10 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PizzaBuilderController {
 
-  private static final String ID_PATH_WITHOUT_SWAGGER_MATCH = "/{id:[!swagger-ui.html]}";
+  //Id Path with regex that only matches on numbers
+  private static final String ID_PATH = "/{id:^[0-9]*$}";
   private final PizzaService pizzaService;
 
-  @GetMapping(path = ID_PATH_WITHOUT_SWAGGER_MATCH)
+  @GetMapping(path = ID_PATH)
   public ResponseEntity<PizzaDto> get(@PathVariable Integer id) {
     return pizzaService.get(id)
         .map(PizzaDto::new)
@@ -41,7 +42,7 @@ public class PizzaBuilderController {
     return new ResponseEntity<>(idDto, HttpStatus.CREATED);
   }
 
-  @DeleteMapping(path = ID_PATH_WITHOUT_SWAGGER_MATCH)
+  @DeleteMapping(path = ID_PATH)
   public ResponseEntity<PizzaDto> delete(@PathVariable Integer id) {
     pizzaService.delete(id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
