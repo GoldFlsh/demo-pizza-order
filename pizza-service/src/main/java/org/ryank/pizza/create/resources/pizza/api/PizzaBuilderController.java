@@ -23,9 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PizzaBuilderController {
 
+  private static final String ID_PATH_WITHOUT_SWAGGER_MATCH = "/{id:[!swagger-ui.html]}";
   private final PizzaService pizzaService;
 
-  @GetMapping(path = "/{id}")
+  @GetMapping(path = ID_PATH_WITHOUT_SWAGGER_MATCH)
   public ResponseEntity<PizzaDto> get(@PathVariable Integer id) {
     return pizzaService.get(id)
         .map(PizzaDto::new)
@@ -40,7 +41,7 @@ public class PizzaBuilderController {
     return new ResponseEntity<>(idDto, HttpStatus.CREATED);
   }
 
-  @DeleteMapping(path = "/{id}")
+  @DeleteMapping(path = ID_PATH_WITHOUT_SWAGGER_MATCH)
   public ResponseEntity<PizzaDto> delete(@PathVariable Integer id) {
     pizzaService.delete(id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);

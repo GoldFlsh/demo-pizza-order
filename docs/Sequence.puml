@@ -63,10 +63,4 @@ OrdersService <-- PizzaService : ack
 
 @enduml
 
-The biggest glaring issue with this design is there will
-absolutely be a lot of duplicate pizzas in the Pizza DB.
-If users start persisting favorite orders, then pizza DB needs
-to be able to 'reuse' pizzas that are the same across multiple
-users/orders.
-
 TODO Only supports ordering pizzas, doesn't support drinks

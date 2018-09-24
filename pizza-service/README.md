@@ -33,6 +33,13 @@ docker build -t spring-boot-pizza-service .
 docker run -p 8080:8080 spring-boot-pizza-service
 ```
 
+## Swagger
+When the app is running view swagger specification at
+```
+http://{host}:8080/pizza/v2/api-docs
+http://{host}:8080/pizza/swagger-ui.html
+```
+
 ## Built With
 
 * [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) - Dependency Management
@@ -52,4 +59,3 @@ docker run -p 8080:8080 spring-boot-pizza-service
 * Using File-based H2 DB which is not good for persistence at all. It's fine for proof of concept but
   need to move to a database that can be accessed from outside the application.
 * Secure such that only administrators can access the configuration services
-
