@@ -8,8 +8,11 @@ hone my skillset designing, architecting and developing a microservice based sof
 
 ## Getting Started
 
-This project is made of multiple submodules which each make up a single service in the node, 
+This project is made of multiple submodules which each make up a single service node in the system, 
 you can read more about them in their individual folders' readme.md file. 
+
+Currently built: 
+pizza-service
 
 ### Prerequisites
 

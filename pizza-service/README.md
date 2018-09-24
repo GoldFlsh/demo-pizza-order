@@ -1,8 +1,8 @@
 # Pizza Service
 
-Allows client to create a pizza and administrators to 
-add and delete configuration of what crusts, sauces, 
-cheeses, and ingredients are available 
+Allows client to create a pizza for use in ordering. 
+Administrators can configure what crusts, sauces, 
+cheeses, and ingredients are available to use during pizza creation 
 ## Getting Started
 
 At the project root you can build this project using
@@ -37,3 +37,19 @@ docker run -p 8080:8080 spring-boot-pizza-service
 
 * [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) - Dependency Management
 * [Docker](https://www.docker.com/) - Containerization
+
+
+## Todo List
+#### Design
+* relies on ext. service for cleanup of created pizzas consider a timeout
+* Requires ext. service to keep track of pizza id...maybe that's ok in this case
+* Duplicate pizzas across many 'users' and many orders will end up in DB...consider possible solutions
+  may be ok if pizzas are always cleaned up after orders are finished. But if pizzas are 'saved' 
+  for reuse then it would become a problem.
+
+#### Implementation
+* Global Exception Handler to catch and handle elegant error responses to client(s)
+* Using File-based H2 DB which is not good for persistence at all. It's fine for proof of concept but
+  need to move to a database that can be accessed from outside the application.
+* Secure such that only administrators can access the configuration services
+

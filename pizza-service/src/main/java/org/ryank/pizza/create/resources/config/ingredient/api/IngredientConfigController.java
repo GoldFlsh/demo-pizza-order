@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IngredientConfigController {
   private final IngredientService ingredientService;
 
-  //TODO Secure such that only administrators can access
-
   @GetMapping
   public ResponseEntity<List<IngredientDto>> get() {
     List<IngredientDto> dtos = ingredientService.get().stream()

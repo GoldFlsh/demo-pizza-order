@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CheeseConfigController {
 
-  //TODO Secure such that only administrators can access
 
   private final CheeseService cheeseService;
 

@@ -27,8 +27,4 @@ public interface PizzaService {
    */
   void delete(Integer id);
 
-  //TODO: relies on ext. service for cleanup of created pizzas consider a timeout
-  //TODO: Requires ext. service to keep track of pizza id...maybe that's ok in this case
-  //TODO: Duplicate pizzas across many 'users' and many orders will end up in DB...consider possible solutions
-  //may be ok if pizzas are always cleaned up after orders are finished. But if pizzas are 'saved' for reuse then it would become a problem.
 }
