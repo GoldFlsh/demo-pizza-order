@@ -3,6 +3,7 @@ package org.ryank.pizza.create.resources.config.cheese.api;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.ryank.pizza.create.common.exceptions.NotFoundException;
 import org.ryank.pizza.create.resources.config.cheese.api.dto.CheeseDto;
 import org.ryank.pizza.create.resources.config.cheese.service.CheeseService;
 import org.ryank.pizza.create.resources.config.cheese.service.model.Cheese;
@@ -39,7 +40,7 @@ public class CheeseConfigController {
   public ResponseEntity<CheeseDto> get(@RequestParam String name) {
     CheeseDto dto = cheeseService.get(name)
         .map(CheeseDto::new)
-        .orElse(null);
+        .orElseThrow(() -> new NotFoundException("Resource not defined with name " + name));
     return new ResponseEntity<>(dto, HttpStatus.OK);
   }
 

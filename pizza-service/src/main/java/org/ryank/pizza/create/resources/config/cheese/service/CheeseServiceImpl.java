@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.ryank.pizza.create.common.exceptions.BadRequestException;
+import org.ryank.pizza.create.common.exceptions.ConflictException;
 import org.ryank.pizza.create.resources.config.cheese.repository.CheeseRepository;
 import org.ryank.pizza.create.resources.config.cheese.repository.dataobject.CheeseDO;
 import org.ryank.pizza.create.resources.config.cheese.service.model.Cheese;
@@ -60,7 +61,7 @@ public class CheeseServiceImpl implements CheeseService {
 
   private void assertNotExists(String name) {
     if (get(name).isPresent()) {
-      throw new BadRequestException("Cheese " + name + " already exists");
+      throw new ConflictException("Cheese " + name + " already exists");
     }
   }
 }

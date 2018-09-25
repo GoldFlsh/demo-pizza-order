@@ -59,3 +59,4 @@ http://{host}:8080/pizza/swagger-ui.html
 * Using File-based H2 DB which is not good for persistence at all. It's fine for proof of concept but
   need to move to a database that can be accessed from outside the application.
 * Secure such that only administrators can access the configuration services
+* Add Swagger annotations to better define rest API
