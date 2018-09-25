@@ -1,3 +1,4 @@
 rootProject.name = 'demo-pizza-order'
 include 'pizza-service'
+include 'order-service'
 
