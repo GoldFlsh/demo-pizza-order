@@ -3,6 +3,7 @@ package org.ryank.pizza.create;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.util.concurrent.ListenableFuture;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -32,7 +33,9 @@ public class DemoPizzaCreateApplication {
           .build()
         .pathMapping("/pizza")
         .apiInfo(apiInfo())
-        .tags(new Tag("Pizza Service", "APIs related to creating pizzas for use in ordering"));
+        .tags(new Tag("Pizza Service", "APIs related to creating pizzas for use in ordering"))
+        .enableUrlTemplating(true)
+        .useDefaultResponseMessages(false);
 
   }
 

@@ -71,6 +71,15 @@ public class CheeseControllerTest {
   }
 
   @Test
+  public void getWithParam_should_returnStatus409_whenServiceDoesntReturnCheese() throws Exception {
+    Mockito.when(service.get(TEST_CHEESE.getName())).thenReturn(Optional.empty());
+
+    mockMvc.perform(get("/cheese").param("name", TEST_CHEESE.getName()))
+        .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
+        .andExpect(jsonPath(JSON_PATH_EXPECTING_CHEESE).doesNotExist());
+  }
+
+  @Test
   public void create_should_returnWithStatus200_whenSuccess() throws Exception {
     Mockito.when(service.create(TEST_CHEESE)).thenReturn(TEST_CHEESE);
 
