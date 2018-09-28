@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.ryank.pizza.create.common.exceptions.BadRequestException;
+import org.ryank.pizza.create.common.exceptions.ConflictException;
 import org.ryank.pizza.create.resources.config.cheese.repository.CheeseRepository;
 import org.ryank.pizza.create.resources.config.cheese.repository.dataobject.CheeseDO;
 import org.ryank.pizza.create.resources.config.cheese.service.model.Cheese;
@@ -77,7 +78,7 @@ public class CheeseServiceTest {
     assertThat(resultCheese, is(expectedCheese));
   }
 
-  @Test(expected = BadRequestException.class)
+  @Test(expected = ConflictException.class)
   public void create_should_throwBadRequest_whenCheeseAlreadyExists() {
     Cheese existingCheese = new Cheese("CHEESE", 1.0);
     Mockito.when(mock.findByNameIgnoreCase(any(String.class)))
@@ -85,7 +86,7 @@ public class CheeseServiceTest {
 
     try {
       cheeseService.create(existingCheese);
-    } catch (BadRequestException e) {
+    } catch (ConflictException e) {
       assertThat(e.getMessage(), is("Cheese " + existingCheese.getName() + " already exists"));
       throw e;
     }
