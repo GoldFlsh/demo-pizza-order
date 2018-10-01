@@ -12,7 +12,6 @@ import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.ryank.pizza.create.DemoPizzaCreateApplication;
 import org.ryank.pizza.create.common.exceptions.BadRequestException;
 import org.ryank.pizza.create.common.exceptions.ConflictException;
 import org.ryank.pizza.create.resources.config.cheese.api.dto.CheeseDto;
@@ -28,7 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = {DemoPizzaCreateApplication.class, CheeseConfigController.class})
+@WebMvcTest(value = {CheeseConfigController.class})
 public class CheeseControllerTest {
 
   private static final Cheese TEST_CHEESE = new Cheese("CHEESE", 0.0);

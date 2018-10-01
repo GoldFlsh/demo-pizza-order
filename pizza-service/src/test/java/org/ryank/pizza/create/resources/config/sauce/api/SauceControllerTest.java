@@ -12,7 +12,6 @@ import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.ryank.pizza.create.DemoPizzaCreateApplication;
 import org.ryank.pizza.create.common.exceptions.BadRequestException;
 import org.ryank.pizza.create.common.exceptions.ConflictException;
 import org.ryank.pizza.create.resources.config.sauce.api.dto.SauceDto;
@@ -28,7 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = {DemoPizzaCreateApplication.class, SauceConfigController.class})
+@WebMvcTest(value = {SauceConfigController.class})
 public class SauceControllerTest {
 
   private static final Sauce TEST_SAUCE = new Sauce("SAUCE", 0.0);
