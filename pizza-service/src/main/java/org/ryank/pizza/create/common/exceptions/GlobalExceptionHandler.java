@@ -35,8 +35,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, Exception e) {
     ErrorResponse errorResponse = new ErrorResponse(
         status,
-        "Server error.",
-        Collections.singletonList(e.getLocalizedMessage()));
+        e.getLocalizedMessage());
     return new ResponseEntity<>(
         errorResponse, new HttpHeaders(), errorResponse.getStatus());
   }
